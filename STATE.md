@@ -31,12 +31,18 @@ collected from the code and from earlier agent sessions.
    only where the effect is used; replace the document-wide `MutationObserver`;
    decide whether to support per-widget Style borders.
 5. **Animated Menu Background:** confirm the `section_style_main-menu` section ID
-   on the installed Elementor Pro version; the newer *Menu* widget is not
-   supported.
+   on the installed Elementor Pro version and record that version in `README.md`;
+   the newer *Menu* widget is not supported.
 6. **Coverflow Slider:** slides are images only; an earlier audit suggested a
    generic default `alt`, which was rightly not applied (the title is the
    fallback).
-7. Optionally record the border-beam upstream commit in
+7. **Optional tooling** (from an earlier scaffold that was never adopted): a
+   `new-widget` generator that creates `widgets/<slug>.php` and
+   `assets/{css,js}/<slug>.*` from templates with the prefix already applied and
+   prints the registration entry for `widget-visibility.php`; and checks beyond
+   `php -l` / `node --check` (PHPCS with the WordPress standard, ESLint and
+   Stylelint with the `@wordpress` configs).
+8. Optionally record the border-beam upstream commit in
    `THIRD-PARTY-NOTICES.md`; the local copy is a `main` download at 1.4.0 and its
    commit was never recorded.
 

@@ -153,7 +153,8 @@ Notes:
 - **Animated Menu Background** targets the classic Nav Menu widget; the newer *Menu*
   widget is not supported.
 - **Coverflow Slider** slides are images only (the original template allowed any
-  container content).
+  container content). Its responsive settings use fixed Swiper breakpoints
+  (0, 767 and 1024 px), not the breakpoints configured in Elementor.
 - **Numeric Chart** exposes one data series and three chart types.
 - Renaming a widget (`get_name()`) breaks pages that already use it, because Elementor
   stores the name as `widgetType` in `_elementor_data`. Widget names must stay stable or

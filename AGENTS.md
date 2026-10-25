@@ -94,7 +94,18 @@ These come from earlier agent sessions on this plugin (April–October 2026).
   See the rerender rule above.
 - Build widgets on `Widget_Base`. Extending Elementor Pro internals (for example
   `Nested_Carousel`) requires registering the type in the editor and depends on
-  script load order; an earlier attempt was abandoned for that reason.
+  script load order; an earlier attempt was abandoned for that reason. If a
+  feature does rely on Pro markup or classes, note the Pro version it was tested
+  with.
+- Load third-party libraries only where the widget is used: register them as
+  dependencies of the widget handles (`get_script_depends()` /
+  `get_style_depends()`), and add SRI attributes through `script_loader_tag` /
+  `style_loader_tag` for those handles only (see Coverflow Slider).
+- Pass widget settings to JavaScript as JSON in a `data-settings` attribute built
+  in `render()`. When a widget runs its own Swiper, give it its own
+  `wrapperClass` / `slideClass` so it does not clash with Elementor's.
+- Choose defaults that make the effect visible as soon as the widget is inserted,
+  and reuse them as the fallback values of the CSS custom properties.
 - Inject controls into existing sections with
   `elementor/element/{stack}/{section_id}/before_section_end`. With the optimized
   markup experiment, `common-optimized` re-fires the `common` hooks, so hooking
