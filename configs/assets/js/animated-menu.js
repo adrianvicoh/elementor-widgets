@@ -1,7 +1,7 @@
 (() => {
 	'use strict';
 
-	const ENABLED_SELECTOR = '.avh-animated-menu--yes';
+	const ENABLED_SELECTOR = '.ew-animated-menu--yes';
 	const instances = new Map();
 	const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -39,25 +39,25 @@
 
 	function getSettings(root) {
 		const style = window.getComputedStyle(root);
-		const extension = getNumber(style, '--avh-animated-menu-extension', 100) / 100;
-		const blur = getNumber(style, '--avh-animated-menu-blur', 22);
+		const extension = getNumber(style, '--ew-animated-menu-extension', 100) / 100;
+		const blur = getNumber(style, '--ew-animated-menu-blur', 22);
 
 		return {
 			blur,
 			endColor: getColor(
-				style.getPropertyValue('--avh-animated-menu-end-color'),
+				style.getPropertyValue('--ew-animated-menu-end-color'),
 				[90, 180, 100]
 			),
 			extension,
-			motion: root.classList.contains('avh-animated-menu-motion-static')
+			motion: root.classList.contains('ew-animated-menu-motion-static')
 				|| reducedMotionQuery.matches
 				? 'static'
 				: 'cursor',
 			pad: Math.ceil(Math.max(90, blur * 3, 45 * extension)),
-			speed: clamp(getNumber(style, '--avh-animated-menu-speed', 0.18), 0.01, 0.5),
+			speed: clamp(getNumber(style, '--ew-animated-menu-speed', 0.18), 0.01, 0.5),
 			spread: 26 * extension,
 			startColor: getColor(
-				style.getPropertyValue('--avh-animated-menu-start-color'),
+				style.getPropertyValue('--ew-animated-menu-start-color'),
 				[150, 220, 150]
 			),
 		};
@@ -79,7 +79,7 @@
 		constructor(root) {
 			this.root = root;
 			this.canvas = document.createElement('canvas');
-			this.canvas.className = 'avh-animated-menu__canvas';
+			this.canvas.className = 'ew-animated-menu__canvas';
 			this.canvas.setAttribute('aria-hidden', 'true');
 			this.root.insertBefore(this.canvas, this.root.firstChild);
 			this.context = this.canvas.getContext('2d');
@@ -127,8 +127,8 @@
 		refresh() {
 			this.settings = getSettings(this.root);
 			const padValue = `${this.settings.pad}px`;
-			if (this.root.style.getPropertyValue('--avh-animated-menu-pad').trim() !== padValue) {
-				this.root.style.setProperty('--avh-animated-menu-pad', padValue);
+			if (this.root.style.getPropertyValue('--ew-animated-menu-pad').trim() !== padValue) {
+				this.root.style.setProperty('--ew-animated-menu-pad', padValue);
 			}
 
 			const width = this.root.clientWidth + this.settings.pad * 2;
@@ -263,7 +263,7 @@
 			this.root.removeEventListener('pointermove', this.onPointerMove);
 			document.removeEventListener('visibilitychange', this.onVisibilityChange);
 			window.removeEventListener('resize', this.onResize);
-			this.root.style.removeProperty('--avh-animated-menu-pad');
+			this.root.style.removeProperty('--ew-animated-menu-pad');
 			this.canvas.remove();
 		}
 	}

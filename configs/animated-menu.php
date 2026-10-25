@@ -12,22 +12,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param \Elementor\Controls_Stack $element Elementor controls stack.
  */
-function elementor_avh_add_animated_menu_controls( $element ): void {
+function elementor_widgets_add_animated_menu_controls( $element ): void {
 	if (
 		! is_object( $element )
 		|| ! method_exists( $element, 'add_control' )
 		|| ! method_exists( $element, 'get_controls' )
-		|| $element->get_controls( 'avh_animated_menu_enabled' )
+		|| $element->get_controls( 'ew_animated_menu_enabled' )
 	) {
 		return;
 	}
 
 	$condition = [
-		'avh_animated_menu_enabled' => 'yes',
+		'ew_animated_menu_enabled' => 'yes',
 	];
 
 	$element->add_control(
-		'avh_animated_menu_heading',
+		'ew_animated_menu_heading',
 		[
 			'label'     => esc_html__( 'Animated Menu Background', 'custom-elementor-widgets' ),
 			'type'      => \Elementor\Controls_Manager::HEADING,
@@ -36,7 +36,7 @@ function elementor_avh_add_animated_menu_controls( $element ): void {
 	);
 
 	$element->add_control(
-		'avh_animated_menu_enabled',
+		'ew_animated_menu_enabled',
 		[
 			'label'              => esc_html__( 'Enable animated menu background', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SWITCHER,
@@ -44,14 +44,14 @@ function elementor_avh_add_animated_menu_controls( $element ): void {
 			'label_off'          => esc_html__( 'Off', 'custom-elementor-widgets' ),
 			'return_value'       => 'yes',
 			'default'            => '',
-			'prefix_class'       => 'avh-animated-menu--',
+			'prefix_class'       => 'ew-animated-menu--',
 			'render_type'        => 'template',
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_animated_menu_motion',
+		'ew_animated_menu_motion',
 		[
 			'label'              => esc_html__( 'Movement', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SELECT,
@@ -61,42 +61,42 @@ function elementor_avh_add_animated_menu_controls( $element ): void {
 				'cursor' => esc_html__( 'Follow cursor', 'custom-elementor-widgets' ),
 			],
 			'condition'          => $condition,
-			'prefix_class'       => 'avh-animated-menu-motion-',
+			'prefix_class'       => 'ew-animated-menu-motion-',
 			'render_type'        => 'template',
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_animated_menu_start_color',
+		'ew_animated_menu_start_color',
 		[
 			'label'              => esc_html__( 'Start color', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::COLOR,
 			'default'            => '#96dc96',
 			'condition'          => $condition,
 			'selectors'          => [
-				'{{WRAPPER}}' => '--avh-animated-menu-start-color: {{VALUE}};',
+				'{{WRAPPER}}' => '--ew-animated-menu-start-color: {{VALUE}};',
 			],
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_animated_menu_end_color',
+		'ew_animated_menu_end_color',
 		[
 			'label'              => esc_html__( 'End color', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::COLOR,
 			'default'            => '#5ab464',
 			'condition'          => $condition,
 			'selectors'          => [
-				'{{WRAPPER}}' => '--avh-animated-menu-end-color: {{VALUE}};',
+				'{{WRAPPER}}' => '--ew-animated-menu-end-color: {{VALUE}};',
 			],
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_animated_menu_extension',
+		'ew_animated_menu_extension',
 		[
 			'label'              => esc_html__( 'Extension', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SLIDER,
@@ -113,14 +113,14 @@ function elementor_avh_add_animated_menu_controls( $element ): void {
 			],
 			'condition'          => $condition,
 			'selectors'          => [
-				'{{WRAPPER}}' => '--avh-animated-menu-extension: {{SIZE}}%;',
+				'{{WRAPPER}}' => '--ew-animated-menu-extension: {{SIZE}}%;',
 			],
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_animated_menu_blur',
+		'ew_animated_menu_blur',
 		[
 			'label'              => esc_html__( 'Blur', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SLIDER,
@@ -137,14 +137,14 @@ function elementor_avh_add_animated_menu_controls( $element ): void {
 			],
 			'condition'          => $condition,
 			'selectors'          => [
-				'{{WRAPPER}}' => '--avh-animated-menu-blur: {{SIZE}}px;',
+				'{{WRAPPER}}' => '--ew-animated-menu-blur: {{SIZE}}px;',
 			],
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_animated_menu_speed',
+		'ew_animated_menu_speed',
 		[
 			'label'              => esc_html__( 'Follow speed', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SLIDER,
@@ -160,32 +160,32 @@ function elementor_avh_add_animated_menu_controls( $element ): void {
 			],
 			'condition'          => $condition,
 			'selectors'          => [
-				'{{WRAPPER}}' => '--avh-animated-menu-speed: {{SIZE}};',
+				'{{WRAPPER}}' => '--ew-animated-menu-speed: {{SIZE}};',
 			],
 			'frontend_available' => true,
 		]
 	);
 }
 
-add_action( 'elementor/element/nav-menu/section_style_main-menu/before_section_end', 'elementor_avh_add_animated_menu_controls', 10, 1 );
+add_action( 'elementor/element/nav-menu/section_style_main-menu/before_section_end', 'elementor_widgets_add_animated_menu_controls', 10, 1 );
 
 /**
  * Enqueue the animated menu runtime on the frontend and editor preview.
  */
-function elementor_avh_enqueue_animated_menu_assets(): void {
-	$plugin_file = dirname( __DIR__ ) . '/elementor-avh-widgets.php';
+function elementor_widgets_enqueue_animated_menu_assets(): void {
+	$plugin_file = dirname( __DIR__ ) . '/elementor-widgets.php';
 	$style_path  = __DIR__ . '/assets/css/animated-menu.css';
 	$script_path = __DIR__ . '/assets/js/animated-menu.js';
 
 	wp_enqueue_style(
-		'elementor-avh-animated-menu',
+		'elementor-widgets-animated-menu',
 		plugins_url( 'configs/assets/css/animated-menu.css', $plugin_file ),
 		[],
 		file_exists( $style_path ) ? filemtime( $style_path ) : false
 	);
 
 	wp_enqueue_script(
-		'elementor-avh-animated-menu',
+		'elementor-widgets-animated-menu',
 		plugins_url( 'configs/assets/js/animated-menu.js', $plugin_file ),
 		[],
 		file_exists( $script_path ) ? filemtime( $script_path ) : false,
@@ -193,6 +193,6 @@ function elementor_avh_enqueue_animated_menu_assets(): void {
 	);
 }
 
-add_action( 'wp_enqueue_scripts', 'elementor_avh_enqueue_animated_menu_assets', 20 );
-add_action( 'elementor/preview/enqueue_styles', 'elementor_avh_enqueue_animated_menu_assets', 20 );
-add_action( 'elementor/preview/enqueue_scripts', 'elementor_avh_enqueue_animated_menu_assets', 20 );
+add_action( 'wp_enqueue_scripts', 'elementor_widgets_enqueue_animated_menu_assets', 20 );
+add_action( 'elementor/preview/enqueue_styles', 'elementor_widgets_enqueue_animated_menu_assets', 20 );
+add_action( 'elementor/preview/enqueue_scripts', 'elementor_widgets_enqueue_animated_menu_assets', 20 );

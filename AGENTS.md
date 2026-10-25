@@ -13,7 +13,7 @@ opt-in extensions to existing Elementor elements.
 - Register every widget in
   `dashboard/dash-configs/widget-visibility.php`; the dashboard controls
   whether Elementor registers it.
-- Register widget assets in `elementor-avh-widgets.php`. Load frontend
+- Register widget assets in `elementor-widgets.php`. Load frontend
   behavior through Elementor's `frontend/element_ready/<widget>.default` hook
   and provide a standalone frontend fallback.
 - Reuse the `custom-elementor-widgets` text domain and escape all rendered

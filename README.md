@@ -68,7 +68,7 @@ loads its assets when enabled:
 
 ## Dashboard
 
-The plugin adds an **AVH Widgets** admin page (Settings via the WordPress Settings API)
+The plugin adds an **Elementor Widgets** admin page (Settings via the WordPress Settings API)
 where every widget and configuration can be enabled or disabled independently:
 
 - `widgets/` are listed in the **Widgets** section (opt-in, default off).
@@ -79,8 +79,8 @@ Disabled features do not register controls, widgets, or frontend assets.
 ## Project structure
 
 ```
-elementor-avh-widgets/
-├── elementor-avh-widgets.php      # Plugin entry point: loads dashboard, configs, widgets
+elementor-widgets/
+├── elementor-widgets.php          # Plugin entry point: loads dashboard, configs, widgets
 ├── widgets/                       # Standalone Elementor widgets
 ├── assets/                        # Frontend assets for the widgets (css/js)
 │   └── vendor/                    # Bundled interact.js/Chart.js runtimes + licenses
@@ -116,7 +116,7 @@ Notes:
 ## Usage
 
 1. Install and activate the plugin (requires Elementor).
-2. Go to **AVH Widgets** in the admin menu and enable the widgets/configurations you need.
+2. Go to **Elementor Widgets** in the admin menu and enable the widgets/configurations you need.
 3. In the Elementor editor:
    - **Coverflow Slider**, **Toggle Content**, **Draggable Boxes**, and
      **Numeric Chart** appear under *Custom Elementor Widgets*.

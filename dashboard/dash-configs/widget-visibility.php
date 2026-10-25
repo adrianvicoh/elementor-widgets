@@ -7,8 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'ELEMENTOR_AVH_ENABLED_WIDGETS_OPTION' ) ) {
-	define( 'ELEMENTOR_AVH_ENABLED_WIDGETS_OPTION', 'elementor_avh_enabled_widgets' );
+if ( ! defined( 'ELEMENTOR_WIDGETS_ENABLED_WIDGETS_OPTION' ) ) {
+	define( 'ELEMENTOR_WIDGETS_ENABLED_WIDGETS_OPTION', 'elementor_widgets_enabled_widgets' );
 }
 
 /**
@@ -19,7 +19,7 @@ if ( ! defined( 'ELEMENTOR_AVH_ENABLED_WIDGETS_OPTION' ) ) {
  *
  * @return array<string, array<string, string>>
  */
-function elementor_avh_get_available_widgets(): array {
+function elementor_widgets_get_available_widgets(): array {
 	$plugin_root = dirname( __DIR__, 2 );
 
 	return [
@@ -62,9 +62,9 @@ function elementor_avh_get_available_widgets(): array {
  *
  * @return string[]
  */
-function elementor_avh_get_enabled_widgets(): array {
-	$available_widgets = array_keys( elementor_avh_get_available_widgets() );
-	$enabled_widgets   = get_option( ELEMENTOR_AVH_ENABLED_WIDGETS_OPTION, false );
+function elementor_widgets_get_enabled_widgets(): array {
+	$available_widgets = array_keys( elementor_widgets_get_available_widgets() );
+	$enabled_widgets   = get_option( ELEMENTOR_WIDGETS_ENABLED_WIDGETS_OPTION, false );
 
 	if ( false === $enabled_widgets ) {
 		return $available_widgets;
@@ -82,8 +82,8 @@ function elementor_avh_get_enabled_widgets(): array {
 /**
  * Determine whether a widget is enabled.
  */
-function elementor_avh_is_widget_enabled( string $widget_id ): bool {
-	return in_array( $widget_id, elementor_avh_get_enabled_widgets(), true );
+function elementor_widgets_is_widget_enabled( string $widget_id ): bool {
+	return in_array( $widget_id, elementor_widgets_get_enabled_widgets(), true );
 }
 
 /**
@@ -92,12 +92,12 @@ function elementor_avh_is_widget_enabled( string $widget_id ): bool {
  * @param mixed $value Submitted setting value.
  * @return string[]
  */
-function elementor_avh_sanitize_enabled_widgets( $value ): array {
+function elementor_widgets_sanitize_enabled_widgets( $value ): array {
 	if ( ! is_array( $value ) ) {
 		return [];
 	}
 
-	$available_widgets = array_keys( elementor_avh_get_available_widgets() );
+	$available_widgets = array_keys( elementor_widgets_get_available_widgets() );
 	$enabled_widgets   = array_unique( array_map( 'sanitize_key', $value ) );
 
 	return array_values( array_intersect( $available_widgets, $enabled_widgets ) );
@@ -106,37 +106,37 @@ function elementor_avh_sanitize_enabled_widgets( $value ): array {
 /**
  * Register the widget visibility section with the WordPress Settings API.
  */
-function elementor_avh_register_widget_visibility_settings(): void {
+function elementor_widgets_register_widget_visibility_settings(): void {
 	register_setting(
-		ELEMENTOR_AVH_SETTINGS_GROUP,
-		ELEMENTOR_AVH_ENABLED_WIDGETS_OPTION,
+		ELEMENTOR_WIDGETS_SETTINGS_GROUP,
+		ELEMENTOR_WIDGETS_ENABLED_WIDGETS_OPTION,
 		[
 			'type'              => 'array',
-			'sanitize_callback' => 'elementor_avh_sanitize_enabled_widgets',
+			'sanitize_callback' => 'elementor_widgets_sanitize_enabled_widgets',
 		]
 	);
 
 	add_settings_section(
-		'elementor_avh_widget_visibility',
+		'elementor_widgets_widget_visibility',
 		esc_html__( 'Elementor widgets', 'custom-elementor-widgets' ),
-		'elementor_avh_render_widget_visibility_description',
-		ELEMENTOR_AVH_DASHBOARD_PAGE
+		'elementor_widgets_render_widget_visibility_description',
+		ELEMENTOR_WIDGETS_DASHBOARD_PAGE
 	);
 
 	add_settings_field(
-		'elementor_avh_enabled_widgets',
+		'elementor_widgets_enabled_widgets',
 		esc_html__( 'Available widgets', 'custom-elementor-widgets' ),
-		'elementor_avh_render_widget_visibility_field',
-		ELEMENTOR_AVH_DASHBOARD_PAGE,
-		'elementor_avh_widget_visibility'
+		'elementor_widgets_render_widget_visibility_field',
+		ELEMENTOR_WIDGETS_DASHBOARD_PAGE,
+		'elementor_widgets_widget_visibility'
 	);
 }
-add_action( 'admin_init', 'elementor_avh_register_widget_visibility_settings' );
+add_action( 'admin_init', 'elementor_widgets_register_widget_visibility_settings' );
 
 /**
  * Render the widget visibility section description.
  */
-function elementor_avh_render_widget_visibility_description(): void {
+function elementor_widgets_render_widget_visibility_description(): void {
 	printf(
 		'<p>%s</p>',
 		esc_html__( 'Choose which widgets are registered and shown in the Elementor editor. Disabling a widget can affect pages where it is already in use.', 'custom-elementor-widgets' )
@@ -144,48 +144,48 @@ function elementor_avh_render_widget_visibility_description(): void {
 
 	printf(
 		'<input type="hidden" name="%s[]" value="">',
-		esc_attr( ELEMENTOR_AVH_ENABLED_WIDGETS_OPTION )
+		esc_attr( ELEMENTOR_WIDGETS_ENABLED_WIDGETS_OPTION )
 	);
 }
 
 /**
  * Render the widget visibility checkboxes.
  */
-function elementor_avh_render_widget_visibility_field(): void {
-	$available_widgets = elementor_avh_get_available_widgets();
-	$enabled_widgets   = elementor_avh_get_enabled_widgets();
+function elementor_widgets_render_widget_visibility_field(): void {
+	$available_widgets = elementor_widgets_get_available_widgets();
+	$enabled_widgets   = elementor_widgets_get_enabled_widgets();
 
 	echo '<fieldset>';
-	echo '<div class="elementor-avh-widget-grid">';
+	echo '<div class="elementor-widgets-widget-grid">';
 
 	foreach ( $available_widgets as $widget_id => $widget ) {
-		$field_id       = 'elementor-avh-widget-' . $widget_id;
+		$field_id       = 'elementor-widgets-widget-' . $widget_id;
 		$description_id = $field_id . '-description';
 		?>
-		<label class="elementor-avh-widget-card" for="<?php echo esc_attr( $field_id ); ?>">
-			<span class="elementor-avh-widget-card__icon" aria-hidden="true">
+		<label class="elementor-widgets-widget-card" for="<?php echo esc_attr( $field_id ); ?>">
+			<span class="elementor-widgets-widget-card__icon" aria-hidden="true">
 				<i class="<?php echo esc_attr( $widget['icon'] ); ?>"></i>
 			</span>
-			<span class="elementor-avh-widget-card__content">
-				<strong class="elementor-avh-widget-card__title"><?php echo esc_html( $widget['title'] ); ?></strong>
+			<span class="elementor-widgets-widget-card__content">
+				<strong class="elementor-widgets-widget-card__title"><?php echo esc_html( $widget['title'] ); ?></strong>
 				<span
-					class="elementor-avh-widget-card__description"
+					class="elementor-widgets-widget-card__description"
 					id="<?php echo esc_attr( $description_id ); ?>"
 				>
 					<?php echo esc_html( $widget['description'] ); ?>
 				</span>
 			</span>
-			<span class="elementor-avh-widget-card__control">
+			<span class="elementor-widgets-widget-card__control">
 				<input
-					class="elementor-avh-widget-card__checkbox"
+					class="elementor-widgets-widget-card__checkbox"
 					type="checkbox"
 					id="<?php echo esc_attr( $field_id ); ?>"
-					name="<?php echo esc_attr( ELEMENTOR_AVH_ENABLED_WIDGETS_OPTION ); ?>[]"
+					name="<?php echo esc_attr( ELEMENTOR_WIDGETS_ENABLED_WIDGETS_OPTION ); ?>[]"
 					value="<?php echo esc_attr( $widget_id ); ?>"
 					aria-describedby="<?php echo esc_attr( $description_id ); ?>"
 					<?php checked( in_array( $widget_id, $enabled_widgets, true ) ); ?>
 				>
-				<span class="elementor-avh-widget-card__switch" aria-hidden="true"></span>
+				<span class="elementor-widgets-widget-card__switch" aria-hidden="true"></span>
 			</span>
 		</label>
 		<?php

@@ -12,12 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param \Elementor\Controls_Stack $element Elementor controls stack.
  */
-function elementor_avh_add_border_beam_controls( $element ): void {
+function elementor_widgets_add_border_beam_controls( $element ): void {
 	if (
 		! is_object( $element )
 		|| ! method_exists( $element, 'add_control' )
 		|| ! method_exists( $element, 'get_controls' )
-		|| $element->get_controls( 'avh_border_beam_enabled' )
+		|| $element->get_controls( 'ew_border_beam_enabled' )
 	) {
 		return;
 	}
@@ -28,11 +28,11 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 	// el mismo stack, así que no hace falta una guarda de doing_action().
 
 	$condition = [
-		'avh_border_beam_enabled' => 'yes',
+		'ew_border_beam_enabled' => 'yes',
 	];
 
 	$element->add_control(
-		'avh_border_beam_heading',
+		'ew_border_beam_heading',
 		[
 			'label'     => esc_html__( 'Animated Border Beam', 'custom-elementor-widgets' ),
 			'type'      => \Elementor\Controls_Manager::HEADING,
@@ -41,7 +41,7 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 	);
 
 	$element->add_control(
-		'avh_border_beam_enabled',
+		'ew_border_beam_enabled',
 		[
 			'label'              => esc_html__( 'Enable animated border', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SWITCHER,
@@ -49,14 +49,14 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 			'label_off'          => esc_html__( 'Off', 'custom-elementor-widgets' ),
 			'return_value'       => 'yes',
 			'default'            => '',
-			'prefix_class'       => 'avh-border-beam--',
+			'prefix_class'       => 'ew-border-beam--',
 			'render_type'        => 'template',
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_type',
+		'ew_border_beam_type',
 		[
 			'label'              => esc_html__( 'Effect type', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SELECT,
@@ -70,14 +70,14 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 				'pulse-outside' => esc_html__( 'Outside pulse', 'custom-elementor-widgets' ),
 			],
 			'condition'          => $condition,
-			'prefix_class'       => 'avh-border-beam-type-',
+			'prefix_class'       => 'ew-border-beam-type-',
 			'render_type'        => 'template',
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_color',
+		'ew_border_beam_color',
 		[
 			'label'              => esc_html__( 'Color palette', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SELECT,
@@ -89,14 +89,14 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 				'sunset'   => esc_html__( 'Sunset', 'custom-elementor-widgets' ),
 			],
 			'condition'          => $condition,
-			'prefix_class'       => 'avh-border-beam-color-',
+			'prefix_class'       => 'ew-border-beam-color-',
 			'render_type'        => 'template',
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_theme',
+		'ew_border_beam_theme',
 		[
 			'label'              => esc_html__( 'Background theme', 'custom-elementor-widgets' ),
 			'type'               => \Elementor\Controls_Manager::SELECT,
@@ -107,14 +107,14 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 				'auto'  => esc_html__( 'System preference', 'custom-elementor-widgets' ),
 			],
 			'condition'          => $condition,
-			'prefix_class'       => 'avh-border-beam-theme-',
+			'prefix_class'       => 'ew-border-beam-theme-',
 			'render_type'        => 'template',
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_duration',
+		'ew_border_beam_duration',
 		[
 			'label'       => esc_html__( 'Duration (seconds)', 'custom-elementor-widgets' ),
 			'description' => esc_html__( 'Leave empty to use the preset: 1.96s for rotation, 3.1s for line, and 2.3s for pulse.', 'custom-elementor-widgets' ),
@@ -125,13 +125,13 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 			'placeholder' => esc_html__( 'Preset', 'custom-elementor-widgets' ),
 			'condition'   => $condition,
 			'selectors'   => [
-				'{{WRAPPER}}' => '--avh-beam-duration: {{VALUE}}s;',
+				'{{WRAPPER}}' => '--ew-beam-duration: {{VALUE}}s;',
 			],
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_strength',
+		'ew_border_beam_strength',
 		[
 			'label'     => esc_html__( 'Strength', 'custom-elementor-widgets' ),
 			'type'      => \Elementor\Controls_Manager::SLIDER,
@@ -147,13 +147,13 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 			],
 			'condition' => $condition,
 			'selectors' => [
-				'{{WRAPPER}}' => '--avh-beam-strength: {{SIZE}};',
+				'{{WRAPPER}}' => '--ew-beam-strength: {{SIZE}};',
 			],
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_brightness',
+		'ew_border_beam_brightness',
 		[
 			'label'       => esc_html__( 'Brightness', 'custom-elementor-widgets' ),
 			'description' => esc_html__( 'Leave empty to use the selected type and theme preset.', 'custom-elementor-widgets' ),
@@ -164,13 +164,13 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 			'placeholder' => esc_html__( 'Preset', 'custom-elementor-widgets' ),
 			'condition'   => $condition,
 			'selectors'   => [
-				'{{WRAPPER}}' => '--avh-beam-brightness: {{VALUE}};',
+				'{{WRAPPER}}' => '--ew-beam-brightness: {{VALUE}};',
 			],
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_saturation',
+		'ew_border_beam_saturation',
 		[
 			'label'       => esc_html__( 'Saturation', 'custom-elementor-widgets' ),
 			'description' => esc_html__( 'Leave empty to use the selected type and theme preset.', 'custom-elementor-widgets' ),
@@ -181,13 +181,13 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 			'placeholder' => esc_html__( 'Preset', 'custom-elementor-widgets' ),
 			'condition'   => $condition,
 			'selectors'   => [
-				'{{WRAPPER}}' => '--avh-beam-saturation: {{VALUE}};',
+				'{{WRAPPER}}' => '--ew-beam-saturation: {{VALUE}};',
 			],
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_hue_range',
+		'ew_border_beam_hue_range',
 		[
 			'label'       => esc_html__( 'Hue range (degrees)', 'custom-elementor-widgets' ),
 			'description' => esc_html__( 'The traveling line is capped at 13 degrees to preserve its palette.', 'custom-elementor-widgets' ),
@@ -198,13 +198,13 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 			'step'        => 1,
 			'condition'   => $condition,
 			'selectors'   => [
-				'{{WRAPPER}}' => '--avh-beam-hue-range: {{VALUE}}deg;',
+				'{{WRAPPER}}' => '--ew-beam-hue-range: {{VALUE}}deg;',
 			],
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_static_colors',
+		'ew_border_beam_static_colors',
 		[
 			'label'              => esc_html__( 'Static colors', 'custom-elementor-widgets' ),
 			'description'        => esc_html__( 'Disables hue shifting while keeping the border motion active.', 'custom-elementor-widgets' ),
@@ -214,58 +214,58 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 			'return_value'       => 'yes',
 			'default'            => '',
 			'condition'          => $condition,
-			'prefix_class'       => 'avh-border-beam-static-',
+			'prefix_class'       => 'ew-border-beam-static-',
 			'render_type'        => 'template',
 			'frontend_available' => true,
 		]
 	);
 
 	$element->add_control(
-		'avh_border_beam_outside_notice',
+		'ew_border_beam_outside_notice',
 		[
 			'type'            => \Elementor\Controls_Manager::RAW_HTML,
 			'raw'             => esc_html__( 'Outside effects need visible overflow around the element. Parent overflow settings can clip the halo.', 'custom-elementor-widgets' ),
 			'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
 			'condition'       => [
-				'avh_border_beam_enabled' => 'yes',
-				'avh_border_beam_type'    => [ 'pulse-outside', 'md-outside' ],
+				'ew_border_beam_enabled' => 'yes',
+				'ew_border_beam_type'    => [ 'pulse-outside', 'md-outside' ],
 			],
 		]
 	);
 }
 
-add_action( 'elementor/element/common/_section_border/before_section_end', 'elementor_avh_add_border_beam_controls', 10, 1 );
-add_action( 'elementor/element/container/section_border/before_section_end', 'elementor_avh_add_border_beam_controls', 10, 1 );
-add_action( 'elementor/element/section/section_border/before_section_end', 'elementor_avh_add_border_beam_controls', 10, 1 );
-add_action( 'elementor/element/column/section_border/before_section_end', 'elementor_avh_add_border_beam_controls', 10, 1 );
+add_action( 'elementor/element/common/_section_border/before_section_end', 'elementor_widgets_add_border_beam_controls', 10, 1 );
+add_action( 'elementor/element/container/section_border/before_section_end', 'elementor_widgets_add_border_beam_controls', 10, 1 );
+add_action( 'elementor/element/section/section_border/before_section_end', 'elementor_widgets_add_border_beam_controls', 10, 1 );
+add_action( 'elementor/element/column/section_border/before_section_end', 'elementor_widgets_add_border_beam_controls', 10, 1 );
 
 /**
  * Enqueue the standalone Border Beam runtime.
  * Only on frontend and preview iframe (not editor panel).
  */
-function elementor_avh_enqueue_border_beam_assets(): void {
-	$plugin_file = dirname( __DIR__ ) . '/elementor-avh-widgets.php';
+function elementor_widgets_enqueue_border_beam_assets(): void {
+	$plugin_file = dirname( __DIR__ ) . '/elementor-widgets.php';
 	$style_path  = __DIR__ . '/assets/css/border-beam.css';
 	$script_path = __DIR__ . '/assets/js/border-beam.js';
 
 	// Frontend real
 	wp_enqueue_style(
-		'elementor-avh-border-beam',
+		'elementor-widgets-border-beam',
 		plugins_url( 'configs/assets/css/border-beam.css', $plugin_file ),
 		[],
 		file_exists( $style_path ) ? filemtime( $style_path ) : false
 	);
 
 	wp_enqueue_script(
-		'elementor-avh-border-beam',
+		'elementor-widgets-border-beam',
 		plugins_url( 'configs/assets/js/border-beam.js', $plugin_file ),
 		[],
 		file_exists( $script_path ) ? filemtime( $script_path ) : false,
 		true
 	);
 }
-add_action( 'wp_enqueue_scripts', 'elementor_avh_enqueue_border_beam_assets', 20 );
+add_action( 'wp_enqueue_scripts', 'elementor_widgets_enqueue_border_beam_assets', 20 );
 
 // Preview iframe (editor canvas) — sí, panel de edición — no
-add_action( 'elementor/preview/enqueue_styles', 'elementor_avh_enqueue_border_beam_assets', 20 );
-add_action( 'elementor/preview/enqueue_scripts', 'elementor_avh_enqueue_border_beam_assets', 20 );
+add_action( 'elementor/preview/enqueue_styles', 'elementor_widgets_enqueue_border_beam_assets', 20 );
+add_action( 'elementor/preview/enqueue_scripts', 'elementor_widgets_enqueue_border_beam_assets', 20 );

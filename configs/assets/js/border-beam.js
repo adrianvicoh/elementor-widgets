@@ -8,8 +8,8 @@
 (() => {
 	'use strict';
 
-	const ENABLED_SELECTOR = '.elementor-element.avh-border-beam--yes';
-	const TYPE_PREFIX = 'avh-border-beam-type-';
+	const ENABLED_SELECTOR = '.elementor-element.ew-border-beam--yes';
+	const TYPE_PREFIX = 'ew-border-beam-type-';
 	const PULSE_TYPES = new Set(['pulse-inner', 'pulse-outside']);
 	const instances = new Map();
 	const targetOwners = new WeakMap();
@@ -59,33 +59,33 @@
 
 	function createEffect() {
 		const effect = document.createElement('span');
-		effect.className = 'avh-border-beam__effect';
+		effect.className = 'ew-border-beam__effect';
 		effect.setAttribute('aria-hidden', 'true');
 		effect.append(
-			createLayer('avh-border-beam__stroke'),
-			createLayer('avh-border-beam__inner'),
-			createLayer('avh-border-beam__bloom')
+			createLayer('ew-border-beam__stroke'),
+			createLayer('ew-border-beam__inner'),
+			createLayer('ew-border-beam__bloom')
 		);
 		return effect;
 	}
 
 	function resolveTheme(root) {
-		const isAuto = root.classList.contains('avh-border-beam-theme-auto');
+		const isAuto = root.classList.contains('ew-border-beam-theme-auto');
 		root.classList.toggle(
-			'avh-border-beam-theme-resolved-dark',
+			'ew-border-beam-theme-resolved-dark',
 			isAuto && darkModeQuery.matches
 		);
 		root.classList.toggle(
-			'avh-border-beam-theme-resolved-light',
+			'ew-border-beam-theme-resolved-light',
 			isAuto && !darkModeQuery.matches
 		);
 	}
 
 	function updateGeometry(instance) {
 		if (instance.type !== 'pulse-outside') {
-			instance.effect.style.removeProperty('--avh-beam-glow-sx');
-			instance.effect.style.removeProperty('--avh-beam-glow-sy');
-			instance.effect.style.removeProperty('--avh-beam-glow-scale');
+			instance.effect.style.removeProperty('--ew-beam-glow-sx');
+			instance.effect.style.removeProperty('--ew-beam-glow-sy');
+			instance.effect.style.removeProperty('--ew-beam-glow-scale');
 			return;
 		}
 
@@ -98,17 +98,17 @@
 		const scaleY = Number(clamp(rect.height / 140, 0.35, 4).toFixed(3));
 		const averageScale = Number(Math.sqrt(scaleX * scaleY).toFixed(3));
 
-		instance.effect.style.setProperty('--avh-beam-glow-sx', String(scaleX));
-		instance.effect.style.setProperty('--avh-beam-glow-sy', String(scaleY));
-		instance.effect.style.setProperty('--avh-beam-glow-scale', String(averageScale));
+		instance.effect.style.setProperty('--ew-beam-glow-sx', String(scaleX));
+		instance.effect.style.setProperty('--ew-beam-glow-sy', String(scaleY));
+		instance.effect.style.setProperty('--ew-beam-glow-scale', String(averageScale));
 	}
 
 	function resetPulse(instance) {
-		instance.effect.style.setProperty('--avh-beam-pulse-scale', '1');
-		instance.effect.style.setProperty('--avh-beam-pulse-opacity', reducedMotionQuery.matches ? '0.82' : '1');
-		instance.effect.style.setProperty('--avh-beam-pulse-x', '0px');
-		instance.effect.style.setProperty('--avh-beam-pulse-y', '0px');
-		instance.effect.style.setProperty('--avh-beam-hue', '0deg');
+		instance.effect.style.setProperty('--ew-beam-pulse-scale', '1');
+		instance.effect.style.setProperty('--ew-beam-pulse-opacity', reducedMotionQuery.matches ? '0.82' : '1');
+		instance.effect.style.setProperty('--ew-beam-pulse-x', '0px');
+		instance.effect.style.setProperty('--ew-beam-pulse-y', '0px');
+		instance.effect.style.setProperty('--ew-beam-hue', '0deg');
 	}
 
 	function cleanup(root) {
@@ -123,12 +123,12 @@
 		instance.effect.remove();
 
 		if (instance.addedPositionClass) {
-			instance.target.classList.remove('avh-border-beam__target--positioned');
+			instance.target.classList.remove('ew-border-beam__target--positioned');
 		}
-		instance.target.classList.remove('avh-border-beam__target');
+		instance.target.classList.remove('ew-border-beam__target');
 		root.classList.remove(
-			'avh-border-beam-theme-resolved-dark',
-			'avh-border-beam-theme-resolved-light'
+			'ew-border-beam-theme-resolved-dark',
+			'ew-border-beam-theme-resolved-light'
 		);
 		instances.delete(root);
 		updateAnimationLoop();
@@ -139,7 +139,7 @@
 			return;
 		}
 
-		if (!root.classList.contains('avh-border-beam--yes')) {
+		if (!root.classList.contains('ew-border-beam--yes')) {
 			cleanup(root);
 			return;
 		}
@@ -158,9 +158,9 @@
 			const computedPosition = window.getComputedStyle(target).position;
 			const addedPositionClass = computedPosition === 'static';
 
-			target.classList.add('avh-border-beam__target');
+			target.classList.add('ew-border-beam__target');
 			if (addedPositionClass) {
-				target.classList.add('avh-border-beam__target--positioned');
+				target.classList.add('ew-border-beam__target--positioned');
 			}
 
 			target.append(effect);
@@ -213,8 +213,8 @@
 
 	function isStatic(instance) {
 		return (
-			instance.root.classList.contains('avh-border-beam-static-yes') ||
-			instance.root.classList.contains('avh-border-beam-color-mono')
+			instance.root.classList.contains('ew-border-beam-static-yes') ||
+			instance.root.classList.contains('ew-border-beam-color-mono')
 		);
 	}
 
@@ -246,10 +246,10 @@
 
 			const duration = Math.max(
 				0.2,
-				getNumericProperty(instance.root, '--avh-beam-duration', 2.3)
+				getNumericProperty(instance.root, '--ew-beam-duration', 2.3)
 			);
 			const hueRange = clamp(
-				getNumericProperty(instance.root, '--avh-beam-hue-range', 30),
+				getNumericProperty(instance.root, '--ew-beam-hue-range', 30),
 				0,
 				180
 			);
@@ -262,23 +262,23 @@
 			const opacityFloor = instance.type === 'pulse-outside' ? 0.55 : 0.68;
 
 			instance.effect.style.setProperty(
-				'--avh-beam-pulse-scale',
+				'--ew-beam-pulse-scale',
 				(1 + scaleAmount * pulse).toFixed(4)
 			);
 			instance.effect.style.setProperty(
-				'--avh-beam-pulse-opacity',
+				'--ew-beam-pulse-opacity',
 				(opacityFloor + (1 - opacityFloor) * pulse).toFixed(4)
 			);
-			instance.effect.style.setProperty('--avh-beam-pulse-x', `${(drift * 1.5).toFixed(2)}px`);
+			instance.effect.style.setProperty('--ew-beam-pulse-x', `${(drift * 1.5).toFixed(2)}px`);
 			instance.effect.style.setProperty(
-				'--avh-beam-pulse-y',
+				'--ew-beam-pulse-y',
 				`${(Math.cos(twoPi * slowPhase) * 1.2).toFixed(2)}px`
 			);
 
 			const hue = isStatic(instance)
 				? 0
 				: -hueRange + 2 * hueRange * pingPong((seconds / 12) % 1);
-			instance.effect.style.setProperty('--avh-beam-hue', `${hue.toFixed(2)}deg`);
+			instance.effect.style.setProperty('--ew-beam-hue', `${hue.toFixed(2)}deg`);
 		}
 
 		if (!hasActivePulse()) {
@@ -342,7 +342,7 @@
 
 						instance.visible = entry.isIntersecting;
 						instance.effect.classList.toggle(
-							'avh-border-beam__effect--paused',
+							'ew-border-beam__effect--paused',
 							!entry.isIntersecting
 						);
 					}

@@ -22,6 +22,18 @@ All notable changes to this plugin are documented in this file.
 - Local, version-pinned browser bundles and MIT license texts for interact.js
   and Chart.js under `assets/vendor/`.
 
+### Changed
+
+- The project is renamed from `elementor-avh-widgets` to `elementor-widgets`.
+  The main plugin file is now `elementor-widgets.php`, the admin page slug is
+  `elementor-widgets`, and the admin menu reads **Elementor Widgets**.
+- The internal `avh` prefix is replaced: PHP functions and constants use
+  `elementor_widgets_` / `ELEMENTOR_WIDGETS_`, asset handles and dashboard
+  classes use `elementor-widgets-`, and Elementor control IDs, CSS classes and
+  custom properties use `ew_` / `ew-`. This is a breaking change: dashboard
+  settings and Border Beam, Animated Background and Animated Menu values saved
+  in existing pages are not migrated.
+
 ### Fixed
 
 - The Animated Border Beam port now credits the original border-beam library

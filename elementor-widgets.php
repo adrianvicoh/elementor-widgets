@@ -14,15 +14,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once __DIR__ . '/dashboard/dashboard-configs.php';
 
-if ( elementor_avh_is_config_enabled( 'border-beam' ) ) {
+if ( elementor_widgets_is_config_enabled( 'border-beam' ) ) {
 	require_once __DIR__ . '/configs/border-beam.php';
 }
 
-if ( elementor_avh_is_config_enabled( 'animated-background' ) ) {
+if ( elementor_widgets_is_config_enabled( 'animated-background' ) ) {
 	require_once __DIR__ . '/configs/animated-background.php';
 }
 
-if ( elementor_avh_is_config_enabled( 'animated-menu' ) ) {
+if ( elementor_widgets_is_config_enabled( 'animated-menu' ) ) {
 	require_once __DIR__ . '/configs/animated-menu.php';
 }
 
@@ -60,8 +60,8 @@ if ( ! defined( 'CHARTJS_URL' ) ) {
  */
 function register_new_widgets($widgets_manager)
 {
-	foreach ( elementor_avh_get_available_widgets() as $widget_id => $widget ) {
-		if ( ! elementor_avh_is_widget_enabled( $widget_id ) ) {
+	foreach ( elementor_widgets_get_available_widgets() as $widget_id => $widget ) {
+		if ( ! elementor_widgets_is_widget_enabled( $widget_id ) ) {
 			continue;
 		}
 
@@ -81,7 +81,7 @@ add_action('elementor/widgets/register', 'register_new_widgets');
  */
 function add_elementor_widget_categories($elements_manager)
 {
-	if ( [] === elementor_avh_get_enabled_widgets() ) {
+	if ( [] === elementor_widgets_get_enabled_widgets() ) {
 		return;
 	}
 
@@ -214,25 +214,25 @@ add_action('elementor/frontend/after_register_styles', 'elementor_widgets_depend
 function enqueue_editor_widget_styles()
 {
 	if (
-		elementor_avh_is_widget_enabled( 'coverflow-slider' )
+		elementor_widgets_is_widget_enabled( 'coverflow-slider' )
 		&& wp_style_is( 'coverflow-slider-widget-style', 'registered' )
 	) {
 		wp_enqueue_style( 'coverflow-slider-widget-style' );
 	}
 	if (
-		elementor_avh_is_widget_enabled( 'toggle-content' )
+		elementor_widgets_is_widget_enabled( 'toggle-content' )
 		&& wp_style_is( 'toggle-content-widget-style', 'registered' )
 	) {
 		wp_enqueue_style( 'toggle-content-widget-style' );
 	}
 	if (
-		elementor_avh_is_widget_enabled( 'draggable-boxes' )
+		elementor_widgets_is_widget_enabled( 'draggable-boxes' )
 		&& wp_style_is( 'draggable-boxes-widget-style', 'registered' )
 	) {
 		wp_enqueue_style( 'draggable-boxes-widget-style' );
 	}
 	if (
-		elementor_avh_is_widget_enabled( 'numeric-chart' )
+		elementor_widgets_is_widget_enabled( 'numeric-chart' )
 		&& wp_style_is( 'numeric-chart-widget-style', 'registered' )
 	) {
 		wp_enqueue_style( 'numeric-chart-widget-style' );

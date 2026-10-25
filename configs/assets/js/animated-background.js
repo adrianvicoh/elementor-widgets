@@ -1,7 +1,7 @@
 (() => {
 	'use strict';
 
-	const ENABLED_SELECTOR = '.avh-animated-background--yes';
+	const ENABLED_SELECTOR = '.ew-animated-background--yes';
 	const instances = new Map();
 	const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -39,23 +39,23 @@
 
 	function getSettings(root) {
 		const style = window.getComputedStyle(root);
-		const extension = getNumber(style, '--avh-animated-background-extension', 100) / 100;
+		const extension = getNumber(style, '--ew-animated-background-extension', 100) / 100;
 
 		return {
-			blur: getNumber(style, '--avh-animated-background-blur', 95),
+			blur: getNumber(style, '--ew-animated-background-blur', 95),
 			endColor: getColor(
-				style.getPropertyValue('--avh-animated-background-end-color'),
+				style.getPropertyValue('--ew-animated-background-end-color'),
 				[205, 170, 255]
 			),
 			extension,
-			motion: root.classList.contains('avh-animated-background-motion-static')
+			motion: root.classList.contains('ew-animated-background-motion-static')
 				|| reducedMotionQuery.matches
 				? 'static'
 				: 'cursor',
-			speed: clamp(getNumber(style, '--avh-animated-background-speed', 0.18), 0.01, 0.5),
+			speed: clamp(getNumber(style, '--ew-animated-background-speed', 0.18), 0.01, 0.5),
 			spread: 180 * extension,
 			startColor: getColor(
-				style.getPropertyValue('--avh-animated-background-start-color'),
+				style.getPropertyValue('--ew-animated-background-start-color'),
 				[255, 150, 200]
 			),
 		};
@@ -77,7 +77,7 @@
 		constructor(root) {
 			this.root = root;
 			this.canvas = document.createElement('canvas');
-			this.canvas.className = 'avh-animated-background__canvas';
+			this.canvas.className = 'ew-animated-background__canvas';
 			this.canvas.setAttribute('aria-hidden', 'true');
 			this.root.insertBefore(this.canvas, this.root.firstChild);
 			this.context = this.canvas.getContext('2d');
