@@ -65,3 +65,56 @@ opt-in extensions to existing Elementor elements.
   agent can continue safely. Remove only stale completed-task details.
 - Validate PHP syntax with `php -l` for each changed PHP file and JavaScript
   syntax with `node --check` for each changed JavaScript file.
+- Syntax checks are not a functional test. Do not report a feature as done or
+  "compatible" until it has been checked in the Elementor editor and on the
+  frontend; if you cannot test it, say so in `STATE.md` and in your answer.
+
+## Elementor lessons from previous sessions
+
+These come from earlier agent sessions on this plugin (April–October 2026).
+
+- Prefix every global name: PHP functions, classes, constants, asset handles and
+  JS hook names. An early copy of this plugin collided with another widget plugin
+  through generic functions such as `register_new_widgets` and a shared class
+  name, which caused fatal errors.
+- Keep widget names (`get_name()`) stable. Elementor stores them as `widgetType`
+  in `_elementor_data`, so a rename breaks existing pages unless a migration ships
+  with it.
+- Version registered assets with `filemtime()`; unversioned assets keep serving
+  stale CSS/JS.
+- Do not nest `start_controls_tabs()` inside a section that already has
+  Normal/Hover tabs: the editor panel hangs. Split the controls into separate
+  sections instead.
+- A control with `selectors` only prints the property it declares. If a layout
+  depends on `display: flex`, declare it explicitly.
+- In `content_template()` a SLIDER value is an object `{size, unit}`; concatenate
+  both parts.
+- Initialise widget scripts on `frontend/element_ready/<name>.default` (with a
+  fallback when Elementor is not present) and normalise `$scope` (jQuery or DOM).
+  See the rerender rule above.
+- Build widgets on `Widget_Base`. Extending Elementor Pro internals (for example
+  `Nested_Carousel`) requires registering the type in the editor and depends on
+  script load order; an earlier attempt was abandoned for that reason.
+- Inject controls into existing sections with
+  `elementor/element/{stack}/{section_id}/before_section_end`. With the optimized
+  markup experiment, `common-optimized` re-fires the `common` hooks, so hooking
+  `common` is enough. Guard against duplicates with `get_controls( 'id' )`.
+- Load configuration assets with `wp_enqueue_scripts` and
+  `elementor/preview/enqueue_*`, never with `elementor/editor/*`. The body class
+  `elementor-editor-active` exists in both the editor panel and the preview
+  iframe.
+- If the widgets vanish from the editor, check Elementor Safe Mode before looking
+  for a fatal error (see *Troubleshooting* in `README.md`).
+
+## Working with sites and environments
+
+- Do not change the database, Elementor settings (for example the Safe Mode allow
+  list) or files on a remote server without asking first.
+- Never mirror a local copy onto a server with deletions unless the local copy is
+  confirmed complete: a past sync from an incomplete local stub deleted widgets on
+  a test site.
+- In the Docker sandbox, read logs with `docker logs`; `tail` on logs symlinked to
+  `/dev/stdout` hangs.
+- Subagents cannot ask the user questions: give them everything they need and
+  expect a report back. Low-cost models produced generic audits with invented file
+  paths in past sessions; verify their claims against the code.

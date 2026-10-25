@@ -6,7 +6,8 @@ WordPress plugin with extended widgets and global features for Elementor.
 
 - WordPress 6.8+
 - Elementor (tested with 4.x)
-- Elementor Pro is listed as a requirement for some widget features
+- Elementor Pro only for **Animated Menu Background** (it extends the Pro Nav Menu
+  widget). The plugin header still lists Pro as required; see `STATE.md`.
 - PHP 8.0+
 
 ## Features
@@ -65,6 +66,17 @@ loads its assets when enabled:
   - **Static colors**: disables hue shifting while keeping the border motion
   - Respects `prefers-reduced-motion` and pauses when the element is out of view
     (IntersectionObserver), so the animation loop only runs while visible.
+  - The effect is intentionally not rendered while editing in Elementor; check it in
+    *Preview* or on the frontend.
+
+- **Animated Background** — soft, configurable gradient backgrounds drawn on a canvas
+  behind the content of any element with a **Background** section
+  (`elementor/element/{common/_section_background,container,section,column}/section_background`).
+  The canvas sits behind the content with `pointer-events: none`, resolves Elementor
+  global colors at runtime, respects `prefers-reduced-motion` and pauses while the tab
+  is hidden.
+- **Animated Menu Background** — the same kind of gradient for the Elementor Pro
+  **Nav Menu** widget (`nav-menu/section_style_main-menu`). Requires Elementor Pro.
 
 ## Dashboard
 
@@ -86,6 +98,8 @@ elementor-widgets/
 │   └── vendor/                    # Bundled interact.js/Chart.js runtimes + licenses
 ├── configs/                       # Global Elementor modifications, not widgets
 │   ├── border-beam.php            # Border Beam: registers controls + assets
+│   ├── animated-background.php    # Animated Background: controls + assets
+│   ├── animated-menu.php          # Animated Menu Background (Pro Nav Menu)
 │   └── assets/                    # Config assets (css/js)
 │       └── border-beam.LICENSE    # MIT license of the original border-beam library
 ├── dashboard/                     # Admin dashboard
@@ -123,6 +137,45 @@ Notes:
    - **Animated Border Beam** appears inside the **Border** section of any supported element
      (Advanced → Border on widgets, Style → Border on containers/sections/columns).
 4. Toggle *Enable animated border* on and configure the effect.
+
+## Known limitations
+
+- **Animated Border Beam** covers the common Border sections only (Advanced → Border
+  on widgets, Style → Border on containers/sections/columns). It does not extend the
+  border controls inside each widget's own Style tab (for example a button border) and
+  it does not support Atomic (Editor V4) widgets.
+- `md-outside` and `pulse-outside` draw outside the element: a parent with
+  `overflow: hidden` clips them (the control shows a notice).
+- Enabled configurations load their CSS/JS on every frontend page, not only on pages
+  that use them. Border Beam also uses a document-wide `MutationObserver`.
+- **Animated Background** forces `overflow: hidden` on the element, which can clip
+  child content that overflows on purpose.
+- **Animated Menu Background** targets the classic Nav Menu widget; the newer *Menu*
+  widget is not supported.
+- **Coverflow Slider** slides are images only (the original template allowed any
+  container content).
+- **Numeric Chart** exposes one data series and three chart types.
+- Renaming a widget (`get_name()`) breaks pages that already use it, because Elementor
+  stores the name as `widgetType` in `_elementor_data`. Widget names must stay stable or
+  ship with a migration.
+
+## Troubleshooting
+
+- **The plugin's widgets disappear from the editor.** Check whether the editor opened in
+  Elementor **Safe Mode**: Safe Mode only loads the plugins in its allow list, so this
+  plugin's widgets and controls are missing. Elementor offers Safe Mode when the editor
+  takes more than about 30 seconds to load, which a slow local Docker setup can reach on
+  its own. It is not necessarily a plugin error.
+- **The editor panel keeps loading forever.** Usually a JavaScript exception in a widget
+  script, or `start_controls_tabs()` nested inside a section that already has
+  Normal/Hover tabs. Check the browser console.
+- **CSS or JS changes do not show up.** Assets are versioned with `filemtime()`; if a
+  change still does not appear, regenerate Elementor's CSS (Elementor → Tools →
+  Regenerate CSS & Data) and clear any page cache.
+- **A widget or setting stopped working after the rename.** Dashboard settings and the
+  Border Beam, Animated Background and Animated Menu values saved before the
+  `elementor-widgets` rename are not migrated (see `CHANGELOG.md`). If the plugin was
+  installed under the old folder name, reactivate it.
 
 ## Third-party libraries
 

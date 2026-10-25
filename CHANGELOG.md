@@ -40,3 +40,36 @@ All notable changes to this plugin are documented in this file.
   by Jakub Antalik: its MIT license ships as
   `configs/assets/border-beam.LICENSE`, and the adapted CSS and JavaScript
   carry an attribution header.
+
+## Before the changelog (reconstructed)
+
+This file was created on 2026-10-17. Earlier changes are reconstructed from the
+Git history and from the AI agent sessions used to build the plugin; dates are
+commit dates.
+
+- **2026-03-29** — Plugin created as `elementor-avh-widgets` from earlier
+  experiments.
+- **2026-04-07 to 2026-04-09** — **Expanded Content Button**: a button that shows
+  and hides a content block, with layout, size and full style controls and live
+  preview in the editor.
+- **2026-04-13** — **Animated Carousel**: centred carousel whose active slide is
+  larger than its neighbours. A first version extending Elementor Pro's Nested
+  Carousel was dropped in favour of an image carousel on `Widget_Base`.
+- **2026-04-28** — Style controls of Expanded Content Button reorganised into
+  separate sections (nested control tabs made the editor panel hang); the plugin
+  header started listing Elementor Pro as required.
+- **2026-04-29** — **Coverflow Slider**, based on the DMmotionarts tutorial, with
+  Swiper 11 from a CDN and SRI attributes.
+- **2026-07-19** — Expanded Content Button and Animated Carousel removed.
+- **2026-07-22** — **Toggle Content** widget.
+- **2026-07-23** — First removal of the `avh` prefixes; **dashboard** to enable or
+  disable each widget, with Elementor icons (card layout on 2026-08-02).
+- **2026-08-02** — **Animated Border Beam**, a port of the border-beam library,
+  injected into the Border sections of widgets, containers, sections and columns.
+- **2026-08-04** — Border Beam effect disabled while editing in Elementor. It was
+  suspected of slowing the editor; a later diagnosis traced the slowness and the
+  Safe Mode prompt to the local Docker environment.
+- **2026-09-25** — **Animated Background** and **Animated Menu Background**
+  configurations.
+- **2026-10-04** — Border Beam effect type **Full border rotation outside**
+  (`md-outside`).

@@ -2,85 +2,65 @@
 
 ## Current objective
 
-Add Elementor widgets for freely draggable boxes and numerical charts using
-locally vendored JavaScript libraries, and record the origin, authorship, and
-license of every third-party work the plugin uses.
+No implementation is in progress. The last completed tasks were the Draggable
+Boxes and Numeric Chart widgets (tested manually after commit `f7cbc35`) and the
+rename to `elementor-widgets` (commit `476a01d`). The open items below were
+collected from the code and from earlier agent sessions.
 
-## Progress
+## Open items
 
-- The existing plugin architecture has been reviewed.
-- `README.txt` does not exist; `README.md` is the maintained user
-  documentation.
-- The requested box interaction is confirmed as direct click/touch dragging,
-  not a swipe carousel.
-- Chosen drag library: interact.js, because it supports free pointer/touch
-  dragging, containment constraints, and inertia. Muuri and SortableJS were
-  considered but target sortable grids/lists rather than free positioning.
-- Chosen chart library: Chart.js.
-- `AGENTS.md` and `CHANGELOG.md` were created before functional changes.
-- Vendored full upstream sources with their MIT licenses under `libs/`
-  (ignored by Git):
-  - interact.js `1.10.27` at commit
-    `3ace1cad145fb728a925e01a3fea2e86d761f6b4`.
-  - Chart.js `4.5.1` at commit
-    `9c5cf9fac7ec04a71b516e2aff3f7d76876be369`.
-- Copied the frontend bundles and matching license texts to `assets/vendor/`
-  so the plugin archive does not require ignored files at runtime.
-- Implemented and registered `Draggable Boxes` and `Numeric Chart`, including
-  local scripts, styles, Elementor controls, and dashboard visibility entries.
-- Review pass after the first agent session (GitHub Copilot in Zed, session
-  `205af757`) stopped on a quota error:
-  - Draggable Boxes no longer marks the persistent Elementor wrapper as bound,
-    which blocked re-initialisation after editor rerenders. Each instance now
-    unsets its interact.js interactables and ResizeObserver before rebinding.
-  - Boxes are clamped inside the canvas on init and when the canvas resizes,
-    so percentage positions cannot leave a box outside a narrow canvas.
-  - Numeric Chart keeps its Chart.js instance on the widget wrapper and
-    destroys it when the canvas is replaced, so rerenders no longer leak
-    instances. A duplicate init for the same canvas is skipped.
-  - An empty chart title no longer enables an empty Chart.js title block.
-- Documentation pass: `README.md` says what each new widget gets from its
-  library and what it implements itself, lists all third-party works, and
-  shows the new root documents in the project structure. `AGENTS.md` records
-  the Elementor rerender pattern and the attribution rules.
-- Attribution pass: added the versioned root `THIRD-PARTY-NOTICES.md` (author,
-  copyright, source, commit, license, and distribution for interact.js,
-  Chart.js, border-beam, Swiper, and the DMmotionarts tutorial). The Border
-  Beam port previously shipped without its MIT notice; it now has
-  `configs/assets/border-beam.LICENSE` and attribution headers in its CSS/JS.
-  `libs/THIRD-PARTY-NOTICES.md` is only a local index.
-- Known scope limits (possible follow-ups, not started): Numeric Chart exposes
-  one data series and only bar/line/doughnut out of Chart.js's chart types.
-  Draggable Boxes uses a generic drag library; card visuals are custom.
+1. **Check every feature after the rename.** The rename changed option names,
+   control IDs, CSS classes and custom properties. Re-enable the features in the
+   dashboard and check Animated Border Beam, Animated Background and Animated Menu
+   Background in the editor and on the frontend. If the local sandbox still has
+   the plugin under its old folder, reactivate it.
+2. **Unprefixed global names.** `register_new_widgets`,
+   `add_elementor_widget_categories`, `enqueue_editor_widget_styles`,
+   `swiper_cdn_script_attributes` and `swiper_cdn_style_attributes` in
+   `elementor-widgets.php`, and the widget classes (`Coverflow_Slider`,
+   `Toggle_Content`, `Draggable_Boxes`, `Numeric_Chart`), have no prefix or
+   namespace. This already caused fatal collisions once (see `AGENTS.md`). The
+   changelog entry for the rename says functions use `elementor_widgets_`; these
+   five do not.
+3. **Plugin header.** `Requires: Elementor, Elementor Pro` is not a WordPress
+   header, and Pro is only needed by Animated Menu Background. Consider
+   `Requires Plugins: elementor` plus a runtime check for Pro in
+   `animated-menu.php`, and add `Version`, `Requires at least: 6.8` and
+   `Requires PHP: 8.0`.
+4. **Animated Border Beam follow-ups** (from the August sessions): load assets
+   only where the effect is used; replace the document-wide `MutationObserver`;
+   decide whether to support per-widget Style borders.
+5. **Animated Menu Background:** confirm the `section_style_main-menu` section ID
+   on the installed Elementor Pro version; the newer *Menu* widget is not
+   supported.
+6. **Coverflow Slider:** slides are images only; an earlier audit suggested a
+   generic default `alt`, which was rightly not applied (the title is the
+   fallback).
+7. Optionally record the border-beam upstream commit in
+   `THIRD-PARTY-NOTICES.md`; the local copy is a `main` download at 1.4.0 and its
+   commit was never recorded.
 
-## Next steps
+## History
 
-1. Optionally record the border-beam upstream commit in
-   `THIRD-PARTY-NOTICES.md`; the local copy is a `main` download at 1.4.0
-   and its commit was never recorded.
+The project history before `CHANGELOG.md` existed (March–October 2026) is
+summarised in `CHANGELOG.md` under *Before the changelog*.
 
 ## Validation
 
-- `php -l` passed for the plugin entry point, widget registry, and both new
-  widget classes.
-- `node --check` passed for `assets/js/draggable-boxes.js`,
-  `assets/js/numeric-chart.js`, and `configs/assets/js/border-beam.js`.
-  `node` is not on this machine's `PATH`; Zed's bundled runtime works:
+- `php -l` passes for all 11 tracked PHP files and `node --check` for the 7
+  plugin JavaScript files (checked on 2026-10-25, after the rename).
+- `node` is not on this machine's `PATH`; Zed's bundled runtime works:
   `C:\Users\adria\AppData\Local\Zed\node\node-v24.21.0-win-x64\node.exe`.
-- Standalone browser smoke test (vendored bundles, no WordPress): both widgets
-  initialise, simulated rerenders leave one Chart instance and one
-  interactable, out-of-bounds boxes are clamped, and arrow keys move a box.
-  A real mouse drag was not tested.
-- `git diff --check` passed.
-- The user tested the widgets manually in a WordPress site with Elementor after
-  commit `f7cbc35`; everything worked.
+- Zed's terminal rejects commands containing `$`; put such commands in a script
+  file.
+- The user tested Draggable Boxes and Numeric Chart manually in a WordPress site
+  with Elementor after commit `f7cbc35`; everything worked.
 
 ## Constraints
 
 - Do not modify `.gitignore`; this is an explicit user instruction recorded
-  in `AGENTS.md`. Its existing local change (removed `elementor-source/` and
-  `external-source/` rules) predates this work and must be preserved.
+  in `AGENTS.md`.
 - `libs/` is ignored by Git and holds local reference trees. Anything that
   must be versioned (bundles, license texts, notices) lives outside `libs/`.
-- Do not replace the existing Coverflow Slider's CDN dependency in this task;
-  the new widgets must not introduce CDN runtime requests.
+- Do not replace the Coverflow Slider's CDN dependency without a decision from
+  the user; new widgets must not introduce CDN runtime requests.
